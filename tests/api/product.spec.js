@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { AuthAPI } from './AuthAPI.js'
+import { request } from 'node:http';
 
 test.describe('Product API', () => {
 
@@ -46,5 +47,19 @@ test.describe('Product API', () => {
     expect(productResponse.status()).toEqual(200);
     expect(productBody.data.length).toBeGreaterThan(1);
 
+    console.log(productBody)
+
+  })
+
+  test('should return complete product data for each product', async ({ request }) => {
+    const productResponse = await request.get(`${process.env.API_URL}/products`);
+    const body = await productResponse.json();
+
+    body.data.forEach(product => {
+      expect(product.id).toBeDefined();
+      expect(product.name).toBeDefined();
+      expect(product.description).toBeDefined();
+      expect(product.price).toBeDefined();
+    });
   })
 })
