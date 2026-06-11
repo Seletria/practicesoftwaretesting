@@ -17,7 +17,7 @@ test.describe('Homepage tests', () => {
     const body = await response.json();
     const beforeCount = await homePage.getProductCount();
 
-    await homePage.filteredByCategory('Hammer');
+    await homePage.filteredByCategory('Hammer', beforeCount);
     const afterCount = await homePage.getProductCount();
 
     expect(afterCount).toBeLessThan(beforeCount);

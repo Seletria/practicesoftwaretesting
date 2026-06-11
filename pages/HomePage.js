@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 export class HomePage {
 
   constructor(page) {
@@ -18,9 +20,11 @@ export class HomePage {
     await this.searchButton.click();
   }
 
-  async filteredByCategory(categoryName) {
+  async filteredByCategory(categoryName, currentCount) {
     await this.page.getByLabel(categoryName).click();
-    await this.page.waitForLoadState('networkidle');
+    // await this.page.waitForLoadState('networkidle');
+    await expect(this.page.locator('[data-test^="product-"]')).not.toHaveCount(currentCount);
+
 
   }
 
