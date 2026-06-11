@@ -13,7 +13,9 @@ export class ProductDetailPage {
   }
 
   async goto(productId) {
-    await this.page.goto(`${process.env.BASE_URL}/product/${productId}`)
+    await this.page.goto(`${process.env.BASE_URL}/product/${productId}`);
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.locator('#btn-add-to-cart').waitFor();
   }
 
   async addProductToCart() {
