@@ -1,6 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { AuthAPI } from './AuthAPI.js'
-import { request } from 'node:http';
 
 test.describe('Product API', () => {
 
