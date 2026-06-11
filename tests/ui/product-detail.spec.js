@@ -17,7 +17,9 @@ test.describe('Product detail tests', () => {
     await loginPage.goto();
     await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
     await page.waitForURL(/account/);
-    await productDetailPage.goto(body.data[0].id);
+
+    const product = body.data.find(p => p.in_stock === true);
+    await productDetailPage.goto(product.id);
 
   })
 
