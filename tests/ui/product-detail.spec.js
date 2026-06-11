@@ -1,0 +1,39 @@
+import { test, expect } from '@playwright/test';
+import { ProductDetailPage } from '../../pages/ProductDetailPage';
+import { LoginPage } from '../../pages/LoginPage';
+
+test.describe('Product detail tests', () => {
+
+  let productDetailPage;
+  let loginPage;
+
+  test.beforeEach(async ({ page, request }) => {
+    productDetailPage = new ProductDetailPage(page);
+    loginPage = new LoginPage(page);
+
+    const response = await request.get(`${process.env.API_URL}/products`);
+    const body = await response.json();
+
+    await loginPage.goto();
+    await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
+    await page.waitForURL(/account/);
+    await productDetailPage.goto(body.data[0].id);
+
+  })
+
+  test('should add product to cart with increased quantity', async ({ page }) => {
+    await productDetailPage.increaseProductQuantity();
+    await productDetailPage.increaseProductQuantity();
+    await productDetailPage.addProductToCart();
+
+    await expect(page.locator('[data-test="nav-cart"]')).toBeVisible();
+    await expect(page.locator('#lblCartCount')).toHaveText('3');
+  })
+
+  test('should add product to favorites when logged in', async ({ page }) => {
+    await productDetailPage.addToFavorites();
+    await expect(page.locator('.toast-message')).toHaveText('Product added to your favorites list.');
+
+  })
+
+})
