@@ -19,6 +19,10 @@ test.describe('Product detail tests', () => {
     await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
     await page.waitForURL(/account/);
 
+    console.log(`api URL, ${process.env.API_URL}`);
+    console.log(`email, ${process.env.CUSTOMER_EMAIL}`);
+    console.log(`password, ${process.env.CUSTOMER_PASSWORD}`);
+
     const product = body.data.find(p => p.in_stock === true) || body.data[0];
 
     if (!product || !product.id) {
