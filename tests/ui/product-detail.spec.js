@@ -15,9 +15,9 @@ test.describe('Product detail tests', () => {
     const response = await request.get(`${process.env.API_URL}/products`);
     const body = await response.json();
 
-    await loginPage.goto();
-    await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
-    await page.waitForURL(/account/);
+    // await loginPage.goto();
+    // await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
+    // await page.waitForURL(/account/);
 
     const product = body.data.find(p => p.in_stock === true) || body.data[0];
 
