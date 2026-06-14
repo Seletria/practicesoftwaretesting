@@ -25,13 +25,7 @@ test.describe('Product detail tests', () => {
       throw new Error("Test için geçerli bir ürün bulunamadı.");
     }
 
-    console.log(`-----------------------${product.id}`)
-
     await productDetailPage.goto(product.id);
-    const currentUrl = page.url();
-    console.log(`-------------------------------------- ${currentUrl}`);
-
-
   })
 
   test('should add product to cart with increased quantity', async ({ page }) => {
