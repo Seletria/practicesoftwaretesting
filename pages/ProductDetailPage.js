@@ -15,7 +15,10 @@ export class ProductDetailPage {
 
   async goto(productId) {
     const baseUrl = process.env.BASE_URL.replace(/\/$/, '');
-    await this.page.goto(`${baseUrl}/product/${productId}`);
+    // await this.page.goto(`${baseUrl}/product/${productId}`);
+    await this.page.goto(`${baseUrl}/product/${productId}`, {
+      waitUntil: 'commit'
+    });
     await this.productTitle.waitFor({ state: 'visible', timeout: 15000 });
 
   }

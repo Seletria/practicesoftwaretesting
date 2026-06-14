@@ -18,7 +18,6 @@ test.describe('Product detail tests', () => {
     await loginPage.goto();
     await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
     await page.waitForURL(/account/);
-    await page.waitForLoadState('networkidle');
 
     const product = body.data.find(p => p.in_stock === true) || body.data[0];
 
