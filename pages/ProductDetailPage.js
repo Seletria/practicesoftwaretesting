@@ -13,25 +13,11 @@ export class ProductDetailPage {
     this.toastMessage = page.locator('#toast-container .toast-message');
   }
 
-  // async goto(productId) {
-  //   const baseUrl = process.env.BASE_URL.replace(/\/$/, '');
-  //   await this.page.goto(`${process.env.BASE_URL}/product/${productId}`);
-  //   await this.productTitle.waitFor({ state: 'visible', timeout: 15000 });
-
-  // }
-
   async goto(productId) {
     const baseUrl = process.env.BASE_URL.replace(/\/$/, '');
-
-    // CI ortamındaki yavaşlığı egale etmek için sayfa ağ trafiğinin durulmasını (networkidle) 
-    // veya DOM'un tamamen hazır olmasını (domcontentloaded) tetikliyoruz.
-    await this.page.goto(`${baseUrl}/product/${productId}`, {
-      waitUntil: 'domcontentloaded'
-    });
-
-    // Elementin DOM'a eklenmesini (attached) ve ardından görünür (visible) olmasını garanti ediyoruz.
-    await this.productTitle.waitFor({ state: 'attached', timeout: 15000 });
+    await this.page.goto(`${baseUrl}/product/${productId}`);
     await this.productTitle.waitFor({ state: 'visible', timeout: 15000 });
+
   }
 
   async addProductToCart() {
