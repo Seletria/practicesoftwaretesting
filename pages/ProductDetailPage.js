@@ -14,7 +14,7 @@ export class ProductDetailPage {
 
   async goto(productId) {
     await this.page.goto(`${process.env.BASE_URL}/product/${productId}`);
-    await this.page.waitForLoadState('networkidle');
+    await this.productTitle.waitFor({ state: 'visible', timeout: 15000 });
 
   }
 
