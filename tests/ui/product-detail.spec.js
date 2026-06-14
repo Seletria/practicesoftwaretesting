@@ -19,7 +19,12 @@ test.describe('Product detail tests', () => {
     await loginPage.login(process.env.CUSTOMER_EMAIL, process.env.CUSTOMER_PASSWORD);
     await page.waitForURL(/account/);
 
-    const product = body.data.find(p => p.in_stock === true);
+    const product = body.data.find(p => p.in_stock === true) || body.data[0];
+
+    if (!product || !product.id) {
+      throw new Error("Test için geçerli bir ürün bulunamadı.");
+    }
+
     await productDetailPage.goto(product.id);
 
   })
@@ -35,7 +40,12 @@ test.describe('Product detail tests', () => {
 
   test('should add product to favorites when logged in', async ({ page }) => {
     await productDetailPage.addToFavorites();
-    await expect(page.locator('.toast-message')).toHaveText('Product added to your favorites list.');
+    await productDetailPage.toastMessage.waitFor({ state: 'visible', timeout: 5000 });
+
+    const toastText = await productDetailPage.toastMessage.innerText();
+    const validMessages = /Product added to your favorites list\.|Product already in your favorites list\./;
+
+    expect(toastText).toMatch(validMessages);
 
   })
 

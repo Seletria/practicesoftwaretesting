@@ -10,6 +10,7 @@ export class ProductDetailPage {
     this.addToFavoritesButton = page.locator('#btn-add-to-favorites');
     this.shoppingCart = page.locator('[data-test="nav-cart"]');
 
+    this.toastMessage = page.locator('#toast-container .toast-message');
   }
 
   async goto(productId) {
@@ -23,6 +24,7 @@ export class ProductDetailPage {
   }
 
   async addToFavorites() {
+    await this.addToFavoritesButton.waitFor({ state: 'visible' });
     await this.addToFavoritesButton.click();
   }
 
