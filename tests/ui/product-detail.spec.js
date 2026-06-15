@@ -39,7 +39,7 @@ test.describe('Product detail tests', () => {
     }
   })
 
-  test('should add product to cart with increased quantity', async ({ page }) => {
+  test('should add product to cart with increased quantity @regression', async ({ page }) => {
     await productDetailPage.increaseProductQuantity();
     await productDetailPage.increaseProductQuantity();
     await productDetailPage.addProductToCart();
@@ -48,7 +48,7 @@ test.describe('Product detail tests', () => {
     await expect(page.locator('#lblCartCount')).toHaveText('3');
   })
 
-  test('should add product to favorites when logged in', async ({ page }) => {
+  test('should add product to favorites when logged in @regression', async ({ page }) => {
     await productDetailPage.addToFavorites();
     await productDetailPage.toastMessage.waitFor({ state: 'visible', timeout: 5000 });
 

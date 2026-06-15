@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { CheckoutPage } from '../../pages/CheckoutPage';
 import { ProductDetailPage } from '../../pages/ProductDetailPage';
 import { HomePage } from '../../pages/HomePage';
+import { generateCheckoutData } from '../../utils/faker';
 
 test.describe('Checkout Page Tests', () => {
 
@@ -27,11 +28,13 @@ test.describe('Checkout Page Tests', () => {
 
   })
 
-  test('should complete checkout as guest', async ({ page }) => {
+  test('should complete checkout as guest @smoke', async ({ page }) => {
+    const checkoutData = generateCheckoutData();
+
     await checkoutPage.goto();
     await checkoutPage.clickContinueToCheckOut();
-    await checkoutPage.clickAndFillGuestInfo('random121@softwaretesting.com', 'randomName', 'randomSurname');
-    await checkoutPage.fillBillingAddress('Algeria', '35500', '111');
+    await checkoutPage.clickAndFillGuestInfo(checkoutData.email, checkoutData.name, checkoutData.surname);
+    await checkoutPage.fillBillingAddress('Algeria', checkoutData.zipcode, checkoutData.houseNumber);
     await checkoutPage.selectPaymentMethod('Cash on Delivery');
     await checkoutPage.expectOrderSuccess();
 

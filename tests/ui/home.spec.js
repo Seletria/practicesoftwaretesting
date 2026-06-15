@@ -12,7 +12,7 @@ test.describe('Homepage tests', () => {
     await homePage.waitForProducts();
   })
 
-  test('should filter products by selected category', async ({ page, request }) => {
+  test('should filter products by selected category @regression', async ({ page, request }) => {
     const response = await request.get(`${process.env.API_URL}/categories`);
     const body = await response.json();
     const beforeCount = await homePage.getProductCount();
@@ -24,7 +24,7 @@ test.describe('Homepage tests', () => {
 
   })
 
-  test('should display search results for searched term', async ({ page }) => {
+  test('should display search results for searched term @regression', async ({ page }) => {
     await homePage.searchingProduct('pliers');
 
     await expect(page.locator('[data-test="search-term"]')).toHaveText('pliers');
