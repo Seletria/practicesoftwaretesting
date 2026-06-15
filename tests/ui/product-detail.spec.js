@@ -30,6 +30,15 @@ test.describe('Product detail tests', () => {
     await productDetailPage.goto(product.id);
   })
 
+  test.afterEach(async ({ authenticatedRequest }) => {
+    const response = await authenticatedRequest.get(`${process.env.API_URL}/favorites`);
+    const body = await response.json();
+
+    for (const favorite of body) {
+      await authenticatedRequest.delete(`${process.env.API_URL}/favorites/${favorite.id}`);
+    }
+  })
+
   test('should add product to cart with increased quantity', async ({ page }) => {
     await productDetailPage.increaseProductQuantity();
     await productDetailPage.increaseProductQuantity();

@@ -30,9 +30,10 @@ export class CheckoutPage {
     this.continueToPaymentBtn = page.locator('[data-test="proceed-3"]');
 
     this.paymentMethodDropdown = page.locator('#payment-method');
-    this.confirmBtn = page.locator('.float-end [data-test="finish"]');
+    this.paymentSuccessfullMsg = page.locator('[data-test="payment-success-message"]');
+    this.confirmBtn = page.locator('[data-test="finish"]');
 
-    this.successfullMessage = page.locator('.alert-success [data-test="payment-success-message"]');
+    this.successfullMessage = page.locator('#order-confirmation');
   }
 
   async goto() {
@@ -80,10 +81,16 @@ export class CheckoutPage {
     await this.paymentMethodDropdown.waitFor({ state: 'visible' });
     await this.paymentMethodDropdown.selectOption(methodValue);
 
+    await expect(this.confirmBtn).toBeEnabled();
     await this.confirmBtn.click();
+    await expect(this.paymentSuccessfullMsg).toBeVisible();
+    await this.confirmBtn.click();
+
   }
 
   async expectOrderSuccess() {
-    await expect(this.successfullMessage).toBeVisible();
+    await this.successfullMessage.waitFor({ state: 'visible' });
+    await expect(this.successfullMessage).toContainText('Thanks for your order!');
+
   }
 }
