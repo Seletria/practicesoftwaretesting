@@ -20,7 +20,7 @@ test.describe('E2E test', () => {
 
   })
 
-  test('checkout flow', async ({ page }) => {
+  test('should complete full checkout flow as guest', async ({ page }) => {
     const checkoutData = generateCheckoutData();
 
     await productDetailPage.addProductToCart();
