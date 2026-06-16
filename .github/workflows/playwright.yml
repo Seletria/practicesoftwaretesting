@@ -10,28 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+
+    - name: Build Docker image
+      run: docker build -t practicesoftwaretesting .
+
+    - name: Create .env file
+      run: |
+        echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+        echo "API_URL=${{ secrets.API_URL }}" >> .env
+        echo "CUSTOMER_EMAIL=${{ secrets.CUSTOMER_EMAIL }}" >> .env
+        echo "CUSTOMER_PASSWORD=${{ secrets.CUSTOMER_PASSWORD }}" >> .env
+
     - name: Run Playwright tests
-      env:
-        BASE_URL: ${{ secrets.BASE_URL }}
-        API_URL: ${{ secrets.API_URL }}
-        CUSTOMER_EMAIL: ${{ secrets.CUSTOMER_EMAIL }}
-        CUSTOMER_PASSWORD: ${{ secrets.CUSTOMER_PASSWORD }}
-      run: npx playwright test
+      run: docker run --rm --env-file .env -e CI=true practicesoftwaretesting
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: debug-screenshot
-        path: debug-screenshot.png
